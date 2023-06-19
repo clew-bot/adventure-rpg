@@ -1,22 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import * as inquirer from 'inquirer'; // Change the import here
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class GameService {
-  async initGame(): Promise<void> {
-    const questions: inquirer.QuestionCollection = [
-      // Adjust the type here
-      {
-        name: 'name',
-        message: 'What is your name, adventurer?',
-        type: 'input',
+  constructor(private readonly prisma: PrismaService) {}
+  async initGame(): Promise<string> {
+    return 'Hello World!';
+  }
+
+  async createUser(
+    email: string,
+    name: string,
+    password: string,
+  ): Promise<string> {
+    const user = await this.prisma.user.create({
+      data: {
+        email,
+        name,
+        password,
       },
-    ];
-
-    const answers = await inquirer.prompt(questions);
-    console.log(`Welcome, ${answers.name}! Your journey begins now...`);
-
-    // Here you can now call the UserService to create the user
-    // or update the user information based on the answers.
+    });
+    return user.id;
   }
 }
