@@ -10,20 +10,23 @@ import { AuthService } from './auth.service';
 
 @Module({
   imports: [
-    UserModule,
-    PassportModule,
     ConfigModule,
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '60s' },
-      }),
+      useFactory: async (configService: ConfigService) => {
+        console.log('JWT Secret: ', configService.get<string>('JWT_SECRET')); // <-- Add this line
+        return {
+          secret: configService.get<string>('JWT_SECRET'),
+          signOptions: { expiresIn: '60s' },
+        };
+      },
     }),
+    UserModule,
   ],
   controllers: [AuthController],
-  providers: [JwtStrategy, ConfigService, JwtService, AuthService],
-  exports: [JwtStrategy, ConfigService, JwtService, AuthService],
+  providers: [JwtService, JwtStrategy, ConfigService, AuthService],
+  exports: [JwtService, JwtStrategy, ConfigService, AuthService],
 })
 export class AuthModule {}

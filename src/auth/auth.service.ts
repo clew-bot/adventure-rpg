@@ -20,9 +20,12 @@ export class AuthService {
     const user = await this.userService.getUserByEmail(email);
     if (user && user.password === password) {
       // Ensure secure comparison in production
-      const payload = { username: user.email, sub: user.id };
+      const payload = { username: user.email, id: user.id };
+      console.log('payload: ', payload);
       return {
-        access_token: this.jwtService.sign(payload),
+        access_token: this.jwtService.sign(payload, {
+          secret: process.env.JWT_SECRET,
+        }),
       };
     } else {
       throw new UnauthorizedException('Invalid credentials');
