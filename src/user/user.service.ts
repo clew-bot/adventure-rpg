@@ -7,7 +7,6 @@ export class UserService {
   constructor(private prisma: PrismaService) {}
 
   async createUser(email: string, password: string): Promise<User> {
-    // Hash password before storing in production
     const newUser = await this.prisma.user.create({
       data: { email, password },
     });

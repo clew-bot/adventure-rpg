@@ -15,10 +15,10 @@ import { AuthService } from './auth.service';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        console.log('JWT Secret: ', configService.get<string>('JWT_SECRET')); // <-- Add this line
+        console.log('JWT Secret: ', configService.get<string>('JWT_SECRET'));
         return {
           secret: configService.get<string>('JWT_SECRET'),
-          signOptions: { expiresIn: '60s' },
+          signOptions: { expiresIn: '24h' },
         };
       },
     }),

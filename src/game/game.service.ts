@@ -4,8 +4,8 @@ import { PrismaService } from '../../prisma/prisma.service';
 @Injectable()
 export class GameService {
   constructor(private readonly prisma: PrismaService) {}
-  async initGame(): Promise<string> {
-    return 'Hello World!';
+  async initGame() {
+    return 'Game started';
   }
 
   async createUser(
