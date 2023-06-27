@@ -1,7 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
-import { User } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -11,7 +10,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(email: string, password: string): Promise<User> {
+  async register(email: string, password: string) {
     if (await this.userService.getUserByEmail(email)) {
       throw new UnauthorizedException('User already exists');
     }
@@ -33,7 +32,7 @@ export class AuthService {
     }
   }
 
-  async validateToken(token: string): Promise<User> {
+  async validateToken(token: string) {
     const payload = this.jwtService.verify(token);
     const user = await this.userService.getUserByEmail(payload.username);
     if (user) {
