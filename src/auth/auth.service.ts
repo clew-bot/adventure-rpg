@@ -22,7 +22,7 @@ export class AuthService {
   async login(email: string, password: string) {
     const user = await this.userService.getUserByEmail(email);
     if (user && (await bcrypt.compare(password, user.password))) {
-      const payload = { username: user.email, id: user.id };
+      const payload = { email: user.email, id: user.id };
       console.log('payload: ', payload);
       return {
         access_token: this.jwtService.sign(payload),
