@@ -17,4 +17,6 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  gameStarted Boolean @default(false)
+  balance   Int @default(0)
 }

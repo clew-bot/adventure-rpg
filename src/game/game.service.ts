@@ -5,7 +5,7 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class GameService {
   constructor(private readonly prisma: PrismaService) {}
   async initGame() {
-    return 'Game started';
+    return 'Hi';
   }
 
   async createUser(
