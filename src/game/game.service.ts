@@ -4,8 +4,11 @@ import { PrismaService } from '../../prisma/prisma.service';
 @Injectable()
 export class GameService {
   constructor(private readonly prisma: PrismaService) {}
-  async initGame() {
-    return 'Hi';
+  async initGame(email: any) {
+    console.log('email: ', email);
+    const mainUser = await this.prisma.user.findUnique({ where: { email } });
+    console.log('mainUser: ', mainUser);
+    return mainUser;
   }
 
   async createUser(
