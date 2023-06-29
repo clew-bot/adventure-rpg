@@ -1,5 +1,10 @@
 // has-started-game.guard.ts
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+} from '@nestjs/common';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { Observable } from 'rxjs';
 
@@ -23,6 +28,11 @@ export class HasStartedGameGuard implements CanActivate {
       },
     });
 
+    if (!user.gameStarted) {
+      throw new ForbiddenException(
+        'Game has not started yet, use /game/start to start!',
+      );
+    }
     return user.gameStarted;
   }
 }
