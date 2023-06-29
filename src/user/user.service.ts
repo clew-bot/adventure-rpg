@@ -6,9 +6,13 @@ import { User } from '@prisma/client';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async createUser(email: string, password: string): Promise<User> {
+  async createUser(
+    email: string,
+    password: string,
+    name: string,
+  ): Promise<User> {
     const newUser = await this.prisma.user.create({
-      data: { email, password },
+      data: { email, name, password },
     });
     return newUser;
   }

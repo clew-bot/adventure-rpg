@@ -10,12 +10,13 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async register(email: string, password: string) {
+  async register(email: string, password: string, name: string) {
     if (await this.userService.getUserByEmail(email)) {
       throw new UnauthorizedException('User already exists');
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await this.userService.createUser(email, hashedPassword);
+    console.log(name, email, hashedPassword);
+    const user = await this.userService.createUser(email, hashedPassword, name);
     return user;
   }
 
