@@ -19,4 +19,11 @@ model User {
   updatedAt DateTime @updatedAt
   gameStarted Boolean @default(false)
   balance   Int @default(0)
+  woodcutting Int @default(0) 
+  mining Int @default(0)
+  fishing Int @default(0)
+  combat Int @default(0)
+  magic Int @default(0)
+  cooking Int @default(0)
+  hitpoints Int @default(0)
 }
