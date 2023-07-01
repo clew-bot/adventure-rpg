@@ -16,25 +16,22 @@ export class GameController {
   @UseGuards(AuthGuard('jwt'))
   @Get('start')
   async startGame(@Req() req: RequestWithUser) {
-    const userId = req.user.id; // assuming 'user' contains 'id' field
-    console.log('UserId: ', userId);
+    const userId = req.user.id;
     return await this.gameService.initGame(userId);
   }
 
   @UseGuards(AuthGuard('jwt'), HasStartedGameGuard)
   @Get('stats')
   async getStats(@Req() req: RequestWithUser) {
-    const userId = req.user.id; // assuming 'user' contains 'id' field
+    const userId = req.user.id;
     return await this.gameService.getStats(userId);
   }
 
   @UseGuards(AuthGuard('jwt'), HasStartedGameGuard)
   @Get('chop')
   async chop(@Req() req: RequestWithUser) {
-    const userId = req.user.id; // assuming 'user' contains 'id' field
-    console.log(userId);
+    const userId = req.user.id;
     const woodUser = await this.gameService.getWoodcuttingLevel(userId);
-    console.log('WoodUser: ', woodUser);
     return await this.gameService.chop(woodUser);
   }
 }

@@ -15,7 +15,6 @@ export class AuthService {
       throw new UnauthorizedException('User already exists');
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(name, email, hashedPassword);
     const user = await this.userService.createUser(email, hashedPassword, name);
     return user;
   }
@@ -24,7 +23,6 @@ export class AuthService {
     const user = await this.userService.getUserByEmail(email);
     if (user && (await bcrypt.compare(password, user.password))) {
       const payload = { email: user.email, id: user.id };
-      console.log('payload: ', payload);
       return {
         access_token: this.jwtService.sign(payload),
       };

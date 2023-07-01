@@ -86,8 +86,6 @@ export class GameService {
   }
 
   async gainWcExperience(user: Woodcutting, treeName: string) {
-    console.log(treeName);
-    console.log(trees);
     const tree = trees.find((tree: any) => tree.name === treeName);
 
     if (!tree) {
@@ -99,22 +97,14 @@ export class GameService {
         'Your woodcutting level is too low for this tree',
       );
     }
-
-    // Increase the user's woodcutting experience
     let newExperience = user.xp + tree.experience;
-    // const currentLevel = levels.find(
-    //   (level: any) => level.level === user.woodcuttingLevel,
-    // );
     const nextLevel = levels.find(
       (level: any) => level.level === user.level + 1,
     );
 
-    console.log('nextLevel', nextLevel);
     // if (!nextLevel) {
     //   throw new Error('Maximum level reached');
     // }
-
-    // Check if the new experience is enough for the next level
     if (newExperience >= nextLevel.experience) {
       // Level up and carry over the leftover experience
       user.level += 1;
@@ -122,8 +112,7 @@ export class GameService {
     }
 
     user.xp = newExperience;
-    // Update the user in the database
-    const updated = await this.prisma.woodcutting.update({
+    await this.prisma.woodcutting.update({
       where: {
         id: user.id,
       },

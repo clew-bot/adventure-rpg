@@ -16,7 +16,7 @@ export class HasStartedGameGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    const userId = request.user.id; // assuming 'user' contains 'id' field
+    const userId = request.user.id;
 
     return this.checkGameStarted(userId);
   }
