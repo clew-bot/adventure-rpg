@@ -16,17 +16,29 @@ export class UserService {
         email,
         name,
         password,
-        woodcutting: 1,
-        mining: 1,
-        cooking: 1,
-        combat: 1,
-        fishing: 1,
-        magic: 1,
         hitpoints: 10,
         gameStarted: false,
         balance: 100,
       },
     });
+
+    const newStats = {
+      data: {
+        level: 1,
+        xp: 0,
+        user: {
+          connect: { id: newUser.id },
+        },
+      },
+    };
+    const createdUser = this.prisma.$transaction([
+      this.prisma.woodcutting.create(newStats),
+      this.prisma.mining.create(newStats),
+      this.prisma.fishing.create(newStats),
+      this.prisma.combat.create(newStats),
+      this.prisma.magic.create(newStats),
+      this.prisma.cooking.create(newStats),
+    ]);
     return newUser;
   }
 

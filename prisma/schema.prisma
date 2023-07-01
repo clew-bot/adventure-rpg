@@ -19,11 +19,60 @@ model User {
   updatedAt DateTime @updatedAt
   gameStarted Boolean @default(false)
   balance   Int @default(0)
-  woodcutting Int @default(0) 
-  mining Int @default(0)
-  fishing Int @default(0)
-  combat Int @default(0)
-  magic Int @default(0)
-  cooking Int @default(0)
+  woodcutting Woodcutting?
+  mining Mining?
+  fishing Fishing?
+  combat Combat?
+  magic Magic?
+  cooking Cooking?
   hitpoints Int @default(0)
 }
+
+model Woodcutting {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  level  Int    @default(1)
+  xp     Int    @default(0)
+  userId String @map("user") @db.ObjectId @unique
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Fishing {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  level  Int    @default(1)
+  xp     Int    @default(0)
+  userId String @map("user") @db.ObjectId @unique
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Mining {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  level  Int    @default(1)
+  xp     Int    @default(0)
+  userId String @map("user") @db.ObjectId @unique
+  user   User   @relation(fields: [userId], references: [id])
+}
+model Combat {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  level  Int    @default(1)
+  xp     Int    @default(0)
+  userId String @map("user") @db.ObjectId @unique
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Cooking {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  level  Int    @default(1)
+  xp     Int    @default(0)
+  userId String @map("user") @db.ObjectId @unique
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Magic {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  level  Int    @default(1)
+  xp     Int    @default(0)
+  userId String @map("user") @db.ObjectId @unique
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+

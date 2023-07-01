@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import levels from "../json/levels.json"
-import trees from "../json/trees.json"
+import levels from '../json/levels.json';
+import trees from '../json/tree.json';
 @Injectable()
 export class GameService {
   constructor(private readonly prisma: PrismaService) {}
@@ -27,12 +27,8 @@ export class GameService {
   }
 
   async chop(userId: string) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-    });
-    return user;
+    const xpGain = this.gainExperience(userId, 'Oak');
+    return xpGain;
   }
 
   async createUser(
@@ -63,8 +59,11 @@ export class GameService {
 
     // Increase the user's woodcutting experience
     let newExperience = user.woodcuttingExperience + tree.experience;
-    const currentLevel = levels.find((level: any) => level.level === user.woodcuttingLevel);
-    const nextLevel = levels.find((level: any) => level.level === user.woodcuttingLevel + 1);
+    const currentLevel = levels.find(
+      (level: any) => level.level === user.woodcuttingLevel,
+    );
+    const nextLevel = levels.find(
+      (level: any) => level.level === user.woodcuttingLevel + 1,
     );
 
     if (!nextLevel) {
@@ -81,11 +80,13 @@ export class GameService {
     user.woodcuttingExperience = newExperience;
 
     // Update the user in the database
-    await this.prisma.user.update({
-      where: { id: user.id },
+    await this.prisma.woodcutting.update({
+      where: {
+        userId: user.id,
+      },
       data: {
-        woodcuttingExperience: user.woodcuttingExperience,
-        woodcuttingLevel: user.woodcuttingLevel,
+        level: user.woodcuttingLevel,
+        xp: user.woodcuttingExperience,
       },
     });
 
