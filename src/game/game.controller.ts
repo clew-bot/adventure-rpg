@@ -27,4 +27,11 @@ export class GameController {
     const userId = req.user.id; // assuming 'user' contains 'id' field
     return await this.gameService.getStats(userId);
   }
+
+  @UseGuards(AuthGuard('jwt'), HasStartedGameGuard)
+  @Get('chop')
+  async chop(@Req() req: RequestWithUser) {
+    const userId = req.user.id; // assuming 'user' contains 'id' field
+    return await this.gameService.chop(userId);
+  }
 }
