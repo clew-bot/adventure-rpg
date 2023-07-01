@@ -6,41 +6,6 @@ import { Woodcutting } from '@prisma/client';
 @Injectable()
 export class GameService {
   constructor(private readonly prisma: PrismaService) {}
-  async initGame(id: any) {
-    const updateGameStarted = await this.prisma.user.update({
-      where: {
-        id: id,
-      },
-      data: {
-        gameStarted: true,
-      },
-    });
-    return updateGameStarted;
-  }
-
-  async getStats(userId: string) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-    });
-    return user;
-  }
-
-  async chop(userId: Woodcutting) {
-    const xpGain = this.gainExperience(userId, 'Oak');
-    return xpGain;
-  }
-
-  async getWoodcuttingLevel(userId: string) {
-    const user = await this.prisma.woodcutting.findUnique({
-      where: {
-        userId: userId,
-      },
-    });
-    return user;
-  }
-
   async createUser(
     email: string,
     name: string,
@@ -55,8 +20,72 @@ export class GameService {
     });
     return user.id;
   }
+  async initGame(id: any) {
+    const updateGameStarted = await this.prisma.user.update({
+      where: {
+        id: id,
+      },
 
-  async gainExperience(user: Woodcutting, treeName: string) {
+      data: {
+        gameStarted: true,
+      },
+    });
+    return updateGameStarted;
+  }
+
+  async getStats(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        name: true,
+        email: true,
+        hitpoints: true,
+        balance: true,
+        createdAt: true,
+        woodcutting: {
+          select: {
+            level: true,
+            xp: true,
+          },
+        },
+        mining: {
+          select: {
+            level: true,
+            xp: true,
+          },
+        },
+        combat: {
+          select: {
+            level: true,
+            xp: true,
+          },
+        },
+        fishing: {
+          select: {
+            level: true,
+            xp: true,
+          },
+        },
+      },
+    });
+    return user;
+  }
+  async getWoodcuttingLevel(userId: string) {
+    const user = await this.prisma.woodcutting.findUnique({
+      where: {
+        userId: userId,
+      },
+    });
+    return user;
+  }
+  async chop(userId: Woodcutting) {
+    const xpGain = this.gainWcExperience(userId, 'Oak');
+    return xpGain;
+  }
+
+  async gainWcExperience(user: Woodcutting, treeName: string) {
     console.log(treeName);
     console.log(trees);
     const tree = trees.find((tree: any) => tree.name === treeName);
@@ -93,8 +122,6 @@ export class GameService {
     }
 
     user.xp = newExperience;
-
-    console.log('updated', user.id);
     // Update the user in the database
     const updated = await this.prisma.woodcutting.update({
       where: {
