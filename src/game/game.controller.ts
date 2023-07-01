@@ -32,6 +32,9 @@ export class GameController {
   @Get('chop')
   async chop(@Req() req: RequestWithUser) {
     const userId = req.user.id; // assuming 'user' contains 'id' field
-    return await this.gameService.chop(userId);
+    console.log(userId);
+    const woodUser = await this.gameService.getWoodcuttingLevel(userId);
+    console.log('WoodUser: ', woodUser);
+    return await this.gameService.chop(woodUser);
   }
 }
